@@ -1,5 +1,6 @@
 // Module imports
 const vscode = require('vscode')
+const MapPreview = require('./MapPreview')
 
 /**
  * This method is called when your extension is activated
@@ -9,7 +10,7 @@ const vscode = require('vscode')
 exports.activate = (context) => {
     context.subscriptions.push(
         vscode.commands.registerCommand('map.previewLocation', () => {
-            // TODO
+            new MapPreview()
         })
     )
 }
