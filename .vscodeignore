@@ -6,4 +6,3 @@ test/**
 **/*.map
 **/.eslintrc.json
 .gitignore
-vsc-extension-quickstart.md
