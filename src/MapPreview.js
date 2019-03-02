@@ -1,6 +1,5 @@
 // Module imports
 const vscode = require('vscode')
-const path   = require('path')
 const Jimp   = require('jimp')
 
 class MapLocation {
@@ -45,9 +44,8 @@ class MapTile {
 }
 
 module.exports = class MapPreview {
-    constructor(extensionPath) {
-        let self = this
-        self.getLocation().then((location) => {
+    static previewLocation() {
+        MapPreview.getLocation().then((location) => {
             for (let zoom = 5; zoom <= 19; zoom ++) {
                 let tile = location.getTile(zoom)
                 let bounds = tile.getBounds()
@@ -76,13 +74,13 @@ module.exports = class MapPreview {
         })
     }
 
-    async getLocation() {
+    static async getLocation() {
         let input = await vscode.window.showInputBox({
             prompt: 'Enter the location',
             validateInput: (input) => {
                 let values = input.split(',').map((value) => { return parseFloat(value) })
                 if (values.length != 2)
-                    return 'Please enter just two values'
+                    return 'Please enter the latitude and longitude'
                 if (isNaN(values[0]) || values[0]<-90 || values[0]>90)
                     return 'The value of latitude is invalid'
                 if (isNaN(values[1]) || values[1]<-180 || values[1]>180)

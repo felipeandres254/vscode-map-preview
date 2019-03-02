@@ -10,7 +10,7 @@ const MapPreview = require('./MapPreview')
 exports.activate = (context) => {
     context.subscriptions.push(
         vscode.commands.registerCommand('map.previewLocation', () => {
-            new MapPreview()
+            MapPreview.previewLocation()
         })
     )
 }
