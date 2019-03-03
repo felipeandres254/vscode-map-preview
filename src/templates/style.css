@@ -54,6 +54,7 @@ body>div#images div.btn-group-vertical button.btn {
     color: #212529;
     background-color: #f8f9fa;
     border-color: #f8f9fa;
+    outline: none !important;
 }
 body>div#images div.btn-group-vertical button.btn:not(:disabled):not(.disabled):active {
     color: #212529;
