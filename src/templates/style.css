@@ -1,0 +1,71 @@
+/** MAIN STYLESHEET **/
+html,
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+body>div#loading,
+body>div#images {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+body>div#loading {
+    display: block;
+}
+body>div#loading img {
+    width: 100px;
+    height: 100px;
+}
+body>div#loading p {
+    margin: 0;
+    font-size: 1em;
+    color: rgba(204, 204, 204, 0.7);
+}
+body>div#images {
+    display: none;
+}
+body>div#images img#marker {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: calc(50% - 24px);
+    left: calc(50% - 12px);
+}
+body>div#images div.btn-group-vertical {
+    position: absolute;
+    top: calc(50% - 225px);
+    left: calc(50% - 305px);
+}
+body>div#images div.btn-group-vertical button.btn {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    font-weight: bold;
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+    outline: none !important;
+}
+body>div#images div.btn-group-vertical button.btn:not(:disabled):not(.disabled):active {
+    color: #212529;
+    background-color: #dae0e5;
+    border-color: #d3d9df;
+}
+body>div#images div.btn-group-vertical button.btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5)
+}
+body>div#images div.btn-group-vertical button.btn:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+}
