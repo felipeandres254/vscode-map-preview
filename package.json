@@ -16,12 +16,12 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:map.previewLocation"
+        "onCommand:maps.previewLocation"
     ],
     "main": "./src/main",
     "contributes": {
         "commands": [{
-            "command": "map.previewLocation",
+            "command": "maps.previewLocation",
             "title": "Preview location",
             "category": "Maps"
         }]
