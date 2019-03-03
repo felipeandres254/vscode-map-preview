@@ -42,9 +42,9 @@ body>div#images img#marker {
     left: calc(50% - 12px);
 }
 body>div#images div.btn-group-vertical {
-    position: absolute;
-    top: calc(50% - 225px);
-    left: calc(50% - 305px);
+    position: fixed;
+    top: 15px;
+    left: 15px;
 }
 body>div#images div.btn-group-vertical button.btn {
     width: 25px;
