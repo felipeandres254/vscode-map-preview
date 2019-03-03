@@ -9,18 +9,28 @@ const MapPreview = require('./MapPreview')
  * @param {vscode.ExtensionContext} context
  */
 exports.activate = (context) => {
+    let current = undefined
     context.subscriptions.push(
         vscode.commands.registerCommand('map.previewLocation', () => {
             MapPreview.getLocation(() => {
-                const panel = vscode.window.createWebviewPanel(
-                    'map-preview', 'Preview location', vscode.ViewColumn.One, {
-                        enableScripts: true,
-                    }
-                )
-                panel.webview.html = createWebview(context.extensionPath)
+                if (current) {
+                    current.reveal(vscode.ViewColumn.One)
+                } else {
+                    current = vscode.window.createWebviewPanel(
+                        'map-preview', 'Preview location', vscode.ViewColumn.One, {
+                            enableScripts: true,
+                        }
+                    )
+                    current.webview.html = createWebview(context.extensionPath)
+                    current.onDidDispose(() => {
+                        current = undefined
+                    }, null, context.subscriptions)
+                }
             }).then((location) => {
                 MapPreview.getLocationImages(location).then((images) => {
-                    // TODO Update webview
+                    if (!current)
+                        return
+                    current.webview.postMessage({ type: 'load', images })
                 })
             }, (error) => {
                 // TODO Dispose webview
@@ -54,11 +64,15 @@ const createWebview = (extensionPath) => {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: https:; script-src 'nonce-${nonce}'; style-src vscode-resource:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: data:; script-src 'nonce-${nonce}'; style-src vscode-resource:;">
     <title>Preview location</title>
     <link rel="stylesheet" type="text/css" href="${resource('templates/style.css')}">
+    <script type="text/javascript" src="${resource('templates/script.js')}" nonce="${nonce}"></script>
 </head>
 <body>
+    <div id="images">
+        <img src="${resource('images/marker.svg')}" id="marker">
+    </div>
     <div id="loading">
         <img src="${resource('images/loading.svg')}">
         <p>Loading preview...</p>

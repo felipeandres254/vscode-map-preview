@@ -46,7 +46,7 @@ class MapTile {
 
 module.exports = class MapPreview {
     static getLocationImages(location) {
-        return Promise.mapSeries(Array.from(Array(17).keys()).splice(8), (zoom) => {
+        return Promise.mapSeries(Array.from(Array(17).keys()).splice(12), (zoom) => {
             let tile = location.getTile(zoom)
             let bounds = tile.getBounds()
             return new Promise((resolve, reject) => {
@@ -70,7 +70,7 @@ module.exports = class MapPreview {
                             let xpx = 256*(location.longitude-bounds.topLeft.longitude)/(bounds.bottomRight.longitude-bounds.topLeft.longitude)
                             let ypx = 256*(location.latitude-bounds.topLeft.latitude)/(bounds.bottomRight.latitude-bounds.topLeft.latitude)
                             image.crop(512+Math.round(xpx)-320, 512+Math.round(ypx)-240, 640, 480)
-                            return image
+                            return image.getBase64Async('image/png')
                         }))
                     })
                 } catch (error) { reject(error) }
