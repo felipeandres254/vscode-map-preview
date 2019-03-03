@@ -66,12 +66,17 @@ const createWebview = (extensionPath) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src vscode-resource: data:; script-src 'nonce-${nonce}'; style-src vscode-resource:;">
     <title>Preview location</title>
+    <link rel="stylesheet" type="text/css" href="${resource('templates/bootstrap.css')}">
     <link rel="stylesheet" type="text/css" href="${resource('templates/style.css')}">
     <script type="text/javascript" src="${resource('templates/script.js')}" nonce="${nonce}"></script>
 </head>
 <body>
     <div id="images">
         <img src="${resource('images/marker.svg')}" id="marker">
+        <div class="btn-group-vertical">
+            <button type="button" class="btn" id="btn-zoom-in">+</button>
+            <button type="button" class="btn" id="btn-zoom-out">-</button>
+        </div>
     </div>
     <div id="loading">
         <img src="${resource('images/loading.svg')}">

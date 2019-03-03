@@ -1,3 +1,4 @@
+/** MAIN STYLESHEET **/
 html,
 body {
     width: 100vw;
@@ -39,4 +40,31 @@ body>div#images img#marker {
     position: absolute;
     top: calc(50% - 24px);
     left: calc(50% - 12px);
+}
+body>div#images div.btn-group-vertical {
+    position: absolute;
+    top: calc(50% - 225px);
+    left: calc(50% - 305px);
+}
+body>div#images div.btn-group-vertical button.btn {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    font-weight: bold;
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #f8f9fa;
+}
+body>div#images div.btn-group-vertical button.btn:not(:disabled):not(.disabled):active {
+    color: #212529;
+    background-color: #dae0e5;
+    border-color: #d3d9df;
+}
+body>div#images div.btn-group-vertical button.btn:focus {
+    box-shadow: 0 0 0 0.2rem rgba(216,217,219,.5)
+}
+body>div#images div.btn-group-vertical button.btn:hover {
+    color: #212529;
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
 }
