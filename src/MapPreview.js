@@ -1,6 +1,7 @@
 // Module imports
-const vscode = require('vscode')
-const Jimp   = require('jimp')
+const vscode  = require('vscode')
+const Promise = require('bluebird')
+const Jimp    = require('jimp')
 
 class MapLocation {
     constructor(latitude, longitude) {
@@ -44,33 +45,38 @@ class MapTile {
 }
 
 module.exports = class MapPreview {
-    static previewLocation() {
-        MapPreview.getLocation().then((location) => {
-            for (let zoom = 5; zoom <= 19; zoom ++) {
+    static getLocationImages() {
+        return MapPreview.getLocation().then((location) => {
+            return Promise.mapSeries(Array.from(Array(17).keys()).splice(8), (zoom) => {
                 let tile = location.getTile(zoom)
                 let bounds = tile.getBounds()
-                new Jimp(1280, 1280, '0x00000000', async (error, image) => {
-                    if (error) throw error
-                    let xx = (tile.x<2 ? 0 : (tile.x>Math.pow(2, tile.zoom)-2 ? Math.pow(2, tile.zoom)-5 : tile.x-2))
-                    let yy = (tile.y<2 ? 0 : (tile.y>Math.pow(2, tile.zoom)-2 ? Math.pow(2, tile.zoom)-5 : tile.y-2))
-                    let tiles = []
-                    for (let x = xx; x < xx+5; x++) {
-                        for (let y = yy; y < yy+5; y++) {
-                            let nTile = new MapTile(x, y, tile.zoom)
-                            tiles.push(
-                                Jimp.read(nTile.getUrl()).then((nImage) => {
-                                    return image.blit(nImage, 256*(x-xx), 256*(y-yy))
-                                })
-                            )
-                        }
-                    }
-                    await Promise.all(tiles)
-                    let xpx = 256*(location.longitude-bounds.topLeft.longitude)/(bounds.bottomRight.longitude-bounds.topLeft.longitude)
-                    let ypx = 256*(location.latitude-bounds.topLeft.latitude)/(bounds.bottomRight.latitude-bounds.topLeft.latitude)
-                    image.crop(512+Math.round(xpx)-320, 512+Math.round(ypx)-240, 640, 480)
-                    // TODO
+                return new Promise((resolve, reject) => {
+                    try {
+                        new Jimp(1280, 1280, '0x00000000', (error, image) => {
+                            if (error) reject(error)
+                            let xx = (tile.x<2 ? 0 : (tile.x>Math.pow(2, tile.zoom)-2 ? Math.pow(2, tile.zoom)-5 : tile.x-2))
+                            let yy = (tile.y<2 ? 0 : (tile.y>Math.pow(2, tile.zoom)-2 ? Math.pow(2, tile.zoom)-5 : tile.y-2))
+                            let tiles = []
+                            for (let x = xx; x < xx+5; x++) {
+                                for (let y = yy; y < yy+5; y++) {
+                                    let nTile = new MapTile(x, y, tile.zoom)
+                                    tiles.push(
+                                        Jimp.read(nTile.getUrl()).then((nImage) => {
+                                            return image.blit(nImage, 256*(x-xx), 256*(y-yy))
+                                        })
+                                    )
+                                }
+                            }
+                            resolve(Promise.all(tiles).then(() => {
+                                let xpx = 256*(location.longitude-bounds.topLeft.longitude)/(bounds.bottomRight.longitude-bounds.topLeft.longitude)
+                                let ypx = 256*(location.latitude-bounds.topLeft.latitude)/(bounds.bottomRight.latitude-bounds.topLeft.latitude)
+                                image.crop(512+Math.round(xpx)-320, 512+Math.round(ypx)-240, 640, 480)
+                                return image
+                            }))
+                        })
+                    } catch (error) { reject(error) }
                 })
-            }
+            })
         })
     }
 
