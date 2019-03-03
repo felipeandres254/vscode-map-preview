@@ -11,7 +11,7 @@ const MapPreview = require('./MapPreview')
 exports.activate = (context) => {
     let current = undefined
     context.subscriptions.push(
-        vscode.commands.registerCommand('map.previewLocation', () => {
+        vscode.commands.registerCommand('maps.previewLocation', () => {
             MapPreview.getLocation(() => {
                 if (current) {
                     current.reveal(vscode.ViewColumn.One)
