@@ -4,6 +4,6 @@ This extension provides a map preview of a location using [Open Street Map](http
 
 ## Usage
 
-On the command palette select `Map: Preview location`, then enter a location in the format `<latitude>,<longitude>`.
+On the command palette select `Maps: Preview location`, then enter a location in the format `<latitude>,<longitude>`.
 
 ![Example](./docs/map_preview.gif)
