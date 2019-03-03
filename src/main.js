@@ -1,6 +1,5 @@
 // Module imports
 const vscode = require('vscode')
-const path   = require('path')
 const MapPreview = require('./MapPreview')
 
 /**
@@ -11,8 +10,15 @@ const MapPreview = require('./MapPreview')
 exports.activate = (context) => {
     context.subscriptions.push(
         vscode.commands.registerCommand('map.previewLocation', () => {
-            MapPreview.getLocationImages().then((images) => {
-                // TODO
+            MapPreview.getLocation(() => {
+                // TODO Create webview
+            }).then((location) => {
+                MapPreview.getLocationImages(location).then((images) => {
+                    // TODO Update webview
+                })
+            }, (error) => {
+                // TODO Dispose webview
+                vscode.window.showErrorMessage(error)
             })
         })
     )
